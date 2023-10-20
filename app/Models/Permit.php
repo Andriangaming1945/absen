@@ -11,6 +11,9 @@ class Permit extends Model
     protected $guarded = [];
     protected $with = ['user', 'information_permit', 'status_permit'];
 
+    protected $cast = ['user', 'get-permit', 'approve-permit'];
+
+    
     public function user(){
         return $this->belongsTo(User::class, 'no_id', 'no_id');
     }

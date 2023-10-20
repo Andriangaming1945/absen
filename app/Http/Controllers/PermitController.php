@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Permit;
 use Illuminate\Http\Request;
+use App\Models\TPA;
 use App\Models\InformationPermit;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -16,16 +18,33 @@ class PermitController extends Controller
      */
     public function index()
     {
-        $permits = Auth::user()->hasrole('Wakasek') || Auth::user()->hasRole('Admin') ?
-                        Permit::latest()->get() : Permit::whereNoId(Auth::user()->no_id)->get();
-
-        $information_permits = InformationPermit::latest()->get();
-
-        return view('permit.permit', [
-            'title' => 'Perizinan',
-            'permits' => $permits,
-            'information_permits' => $information_permits,
-        ]);
+        if (Auth::user()->hasRole('Waka Kurikulum')) {
+           
+            $teachers = Teacher::all(); 
+            
+            return view('permit.teachers', [
+                'title' => 'Data Guru',
+                'teachers' => $teachers,
+            ]);
+        } elseif (Auth::user()->hasRole('Waka Admin')) {
+            
+            $tpaData = TPA::all(); 
+            
+            return view('permit.tpa_data', [
+                'title' => 'Data TPA',
+                'tpaData' => $tpaData,
+            ]);
+        } else {
+            
+            $permits = Permit::whereNoId(Auth::user()->no_id)->get();
+            $information_permits = InformationPermit::latest()->get();
+            
+            return view('permit.permit', [
+                'title' => 'Perizinan',
+                'permits' => $permits,
+                'information_permits' => $information_permits,
+            ]);
+        }
     }
 
     /**

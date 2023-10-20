@@ -68,6 +68,7 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'Super Admin']);
         Role::create(['name' => 'Admin']);
         Role::create(['name' => 'Waka Kurikulum']);
+        Role::create(['name' => 'Waka Admin']);
         Role::create(['name' => 'Guru Full Time']);
         Role::create(['name' => 'Guru Part Time']);
         Role::create(['name' => 'TPA Full Time']);
@@ -106,12 +107,12 @@ class DatabaseSeeder extends Seeder
         $admin->givePermissionTo('get-permit');
 
         $waka_kurikulum = Role::findByName('Waka Kurikulum');
-        $waka_kurikulum->givePermissionTo('get-permit');
+        $waka_kurikulum->givePermissionTo('get-permit'); //perizinannya menampilkan data dari guru saja
         $waka_kurikulum->givePermissionTo('approve-permit');
 
         
         $waka_admin = Role::findByName('Waka admin');
-        $waka_admin->givePermissionTo('get-permit');
+        $waka_admin->givePermissionTo('get-permit'); //perizinannya menampilkan data dari TPA saja ntah itu TPA full dan TPA part
         $waka_admin->givePermissionTo('approve-permit');
 
 
@@ -197,7 +198,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Waka kurikulum');
-
+        
         $user = User::create([
             'no_id' => 2,
             'name' => 'MUBAROK',
